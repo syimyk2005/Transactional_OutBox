@@ -3,6 +3,7 @@ package com.example.transaction_outbox_pattern.sheduller;
 import com.example.transaction_outbox_pattern.mapper.RetryableMapper;
 import com.example.transaction_outbox_pattern.model.enums.RetryableTaskType;
 import com.example.transaction_outbox_pattern.service.DeliveryService;
+import com.example.transaction_outbox_pattern.service.NotificationService;
 import com.example.transaction_outbox_pattern.service.RetryableTaskService;
 import com.example.transaction_outbox_pattern.service.retryable.RetryableTaskProcessor;
 import com.example.transaction_outbox_pattern.service.retryable.SendCreateDeliveryRetryableTaskProcessor;
@@ -21,9 +22,10 @@ public class RetryableTaskScheduler {
     private final RetryableTaskService retryableTaskService;
     private final RetryableMapper retryableMapper;
     private final DeliveryService deliveryService;
+    private final NotificationService notificationService;
     private final Map<RetryableTaskType, RetryableTaskProcessor> taskProcessors = Map.of(
             RetryableTaskType.SEND_CREATE_DELIVERY_REQUEST, new SendCreateDeliveryRetryableTaskProcessor(deliveryService, retryableMapper, retryableTaskService),
-            RetryableTaskType.SEND_CREATE_NOTIFICATION_REQUEST, new SendCreateNotificationRequestRetryableTaskProcessor()
+            RetryableTaskType.SEND_CREATE_NOTIFICATION_REQUEST, new SendCreateNotificationRequestRetryableTaskProcessor(notificationService, retryableMapper, retryableTaskService)
     );
 
 
