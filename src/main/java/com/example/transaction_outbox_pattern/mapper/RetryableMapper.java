@@ -2,21 +2,17 @@ package com.example.transaction_outbox_pattern.mapper;
 
 import com.example.transaction_outbox_pattern.model.entity.Order;
 import com.example.transaction_outbox_pattern.model.entity.RetryableTask;
+import com.example.transaction_outbox_pattern.model.enums.RetryableTaskType;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
-import java.lang.reflect.Type;
-
 @Mapper
 public interface RetryableMapper {
     @Mapping(source = "order", target = "payload", qualifiedByName = "convertObjectToJson")
-    RetryableTask toSendCreateDeliveryRequestRetryableTask(Order order);
-
-    @Mapping(source = "order", target = "payload", qualifiedByName = "convertObjectToJson")
-    RetryableTask toSendCreateNotificationRequestRetryableTask(Order order);
+    RetryableTask toRetryableTask(Order order, RetryableTaskType retryableTaskType);
 
     @Named("convertObjectToJson")
     default String convertObjectToJson(Order order) {
@@ -28,8 +24,8 @@ public interface RetryableMapper {
         }
     }
 
-    @Named("convertObjectToOrder")
-    default Order convertObjectToOrder(String json) {
+    @Named("convertJsonToOrder")
+    default Order convertJsonToOrder(String json) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             return objectMapper.readValue(json, Order.class);

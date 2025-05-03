@@ -5,3 +5,12 @@ integration:
         url: ${NOTIFICATION_SERVICE_URL:http://localhost:8082/api/v1}
     paymentService:
         url: ${PAYMENT_SERVICE_URL:http://localhost:8086/api/v1}
+
+retryableTaskScheduler:
+    enabled: {RETRYABLE_TASK_SCHEDULER_IS_INABLED: true}
+    limit: {RETRYABLE_TASK_SCHEDULER_LIMIT_TASK_COUNT: 100}
+    timeout: {RETRYABLE_TASK_SHEDULER_TIMEOUT_IN_SECONDS: 1000}
+
+retryableTask:
+    limit: 100
+    timeoutInSeconds: 36000
